@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>知乎登陆</title>
+    <link rel='stylesheet' href='/stylesheets/bootstrap.min.css' />
+    <link rel='stylesheet' href='/stylesheets/login.css' />
+    <script type="text/javascript" src="/javascripts/jquery.js"></script>
+    <script type="text/javascript" src="/javascripts/bootstrap.js"></script>
+</head>
+<body ng-app="login" >
+    <div class="page-body text-center" ng-controller="appCtrl">
+        <div class="main-content" >
+            <div class="index-header">
+                <h1 class="logo">知乎</h1>
+                <h4 class="subtitle" >与世界分享你的知识、经验和见解</h4>
+
+            </div>
+            <div class="index-tabnavs">
+                <div class="nav-slider">
+                    <a href="#signup" ng-class="{active:Actived ==='sign'}" ng-click="Actived = 'sign'">注册</a>
+                    <a href="#signin" ng-class="{active:Actived ==='login'}" ng-click="Actived = 'login'">登陆</a>
+                </div>
+            </div>
+            <div class="view-signup"  >
+                <ng-view></ng-view>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="text/javascript" src="/javascripts/angular.min.js"></script>
+    <script type="text/javascript" src="/javascripts/angular-route.min.js"></script>
+    <script>
+        var app=angular.module("login",['ngRoute'])
+                .config(['$routeProvider',
+                    function ($routeProvider) {
+                        $routeProvider.when('/', {
+                            templateUrl: '/partials/sign.html'
+                        }).when('/signup',{
+                            templateUrl: '/partials/sign.html'
+                        }).when('/signin',{
+                            templateUrl: '/partials/login.html'
+                        });
+                    }]);
+                //定义Service
+            app.factory('data', function () {
+
+                var user="";
+                var password="";
+
+                //供外界使用Singleton对象
+                return {
+                    user: user,  //返回内部包容数据对象给外界使用
+                    password: password, //返回内部定义的函数供外界调用
+                };
+            });
+
+            app.controller("appCtrl",function($scope){
+                $scope.Actived="sign";
+            });
+
+            app.controller("signCtrl",function($scope,$http,data,$window){
+                $scope.user="";
+                $scope.password="";
+                $scope.passwordAgain="";
+
+                $scope.sign=function() {
+                    data.user=$scope.user;
+                    data.password=$scope.password;
+                    $http(
+                            {
+                                method: 'POST',
+                                url: "/signup",
+                                data: {
+                                    user: $scope.user,
+                                    password: $scope.password
+                                }
+                            }
+                    ).success(function (data) {
+                        console.log(data.message);
+                        if(data.message==='ok'){
+                            console.log(data.message);
+                            $window.location.href='/index';
+                        }
+                        else if(data.message)
+                            alert(data.message);
+
+                    }).error(function (data) {
+                        alert("error");
+                        alert(data);
+                    });
+                }
+            });
+
+            app.controller("loginCtrl",function($scope,$http,$window){
+                $scope.user="";
+                $scope.password="";
+                $scope.login=function(){
+                    $http(
+                            {
+                                method: 'POST',
+                                url: "/signin",
+                                data: {
+                                    user: $scope.user,
+                                    password: $scope.password
+                                }
+                            }
+                    ).success(function (data) {
+                        console.log(data.message);
+                        if(data.message==='ok'){
+                            console.log(data.message);
+                            $window.location.href='/index';
+                        }
+                        else if(data.message)
+                            alert(data.message);
+
+                    }).error(function (data) {
+                        alert("error");
+                        alert(data);
+                    });
+                }
+            });
+
+            app.directive('ensureSame', function() {
+                return {
+                    restrict : 'A',
+                    require: 'ngModel',
+                    link: function(scope, ele, attrs) {
+                        console.log(scope.passwordAgain);
+                        scope.$watch(attrs.ngModel, function() {
+                                if(scope.password!=scope.passwordAgain)
+                                    scope.passwordNotAg=true;
+                                else {
+                                    scope.passwordNotAg=false;
+                                }
+                        });
+                    }
+                }
+            });
+
+    </script>
+</body>
+
+</html>

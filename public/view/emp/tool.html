@@ -1,0 +1,35 @@
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="list-group">
+                <a href="#/emp-tool" class="list-group-item active">所有工具</a>
+                <a href="#/emp-rent" class="list-group-item">借还信息</a>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>工具名称</th>
+                    <th>工具ID</th>
+                    <th>剩余量</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="tool in toolInfo">
+                    <th scope="row">阿姆斯特朗回旋加速炮</th>
+                    <td>123</td>
+                    <td>100</td>
+                    <td>
+                        <button class="return-button" class="btn btn-default " href="#" >
+                        借
+                    </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

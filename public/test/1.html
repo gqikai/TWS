@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="phonecatApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../lib/js/angular.js"></script>
+    <script>
+        angular.module('phonecatApp',[])
+                .controller('TestCtrl',['$scope','$rootScope',
+            function($scope,$rootScope) {
+                $rootScope.name = 'this is test';
+            }
+        ]).controller('Test111Ctrl',['$scope','$rootScope',
+            function($scope,$rootScope) {
+                $scope.name = 'hel';
+            }
+        ]);
+    </script>
+</head>
+<body>
+<div ng-controller="TestCtrl">
+    I  set the global variable.<strong>{{$root.name}}</strong>
+</div>
+
+<div ng-controller="Test111Ctrl">
+    1,get global variable .<strong>{{name}}</strong><br>
+    2,get global variable .<strong>{{$root.name}}</strong>
+</div>
+</body>
+</html>

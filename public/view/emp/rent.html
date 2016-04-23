@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col-md-2">
+        <div class="list-group">
+            <a href="#/emp-tool" class="list-group-item">所有工具</a>
+            <a href="#/emp-rent" class="list-group-item active">借还信息</a>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>工具名称</th>
+                <th>工具ID</th>
+                <th>数量</th>
+                <th>租借日期</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="info in rentInfo">
+                <th>{{info.toolName}}</th>
+                <td>{{info.toolID}}</td>
+                <td>{{info.num}}</td>
+                <td>{{info.time}}</td>
+                <td><button ng-click="returnTool(info)" class="btn btn-default" href="#">注销/返还</button></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
