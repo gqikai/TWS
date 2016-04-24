@@ -43,8 +43,23 @@ router.get("/tool",function(req,res){
 router.get("/tool/rent",function(req,res){
 
 
-    if(req.session.user){
+    if(req.session.user.Nickname == 'admin'){
         rent.findAllRents(function(err, rents){
+            if(err){
+                return res.status(200).json(err);
+            }
+            else
+                return res.status(200).json(rents);
+        });
+
+    }
+
+});
+router.get("/users",function(req,res){
+
+
+    if(req.session.user.Nickname == 'admin'){
+        User.findAllUsers(function(err, rents){
             if(err){
                 return res.status(200).json(err);
             }
@@ -112,7 +127,11 @@ router.post('/signup',function(req,res){
 
 
         req.session.user = user;
-        return res.status(200).json({message:'ok',user_id: user._id});
+        if(user.NickName == 'admin'){
+            return res.status(200).json({message:'ok',user_id: user._id,isAdmin: true});
+        }else{
+            return res.status(200).json({message:'ok',user_id: user._id});
+        }
     });
 
 });
@@ -140,7 +159,12 @@ router.post('/signin',function(req,res){
                 signed: true
             });
             req.session.user = user;
-            return res.status(200).json({message:"ok",user_id: user._id});
+            console.log("login======="+user)
+            if(user.NickName == 'admin'){
+                return res.status(200).json({message:'ok',user_id: user._id,isAdmin: true});
+            }else{
+                return res.status(200).json({message:'ok',user_id: user._id});
+            }
         }
     });
 

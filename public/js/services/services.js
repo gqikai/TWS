@@ -1,7 +1,8 @@
 angular.module('TWS.services',[])
     .factory('UserService', function ($http,$rootScope,$q) {
         var signupURL = 'http://localhost:4000/signup',
-            signinURL = 'http://localhost:4000/signin';
+            signinURL = 'http://localhost:4000/signin',
+            userUrl = 'http://localhost:4000/users'
 
         var signup = function(username,password) {
             var deferred = $q.defer();
@@ -59,10 +60,28 @@ angular.module('TWS.services',[])
             });
             return deferred.promise;
         };
+        var findAllUsers = function() {
+            var deferred = $q.defer();
 
+            $http({
+                method: 'GET',
+                url: userUrl
+            }).success(function(data, status, headers) {
+
+                console.log(data);
+
+                deferred.resolve(data);
+
+            }).error(function (data, statue, headers) {
+                deferred.reject(data)
+            });
+
+            return deferred.promise;
+        };
         return {
             signup: signup,
-            signin: signin
+            signin: signin,
+            findAllUsers: findAllUsers
         };
     })
     .factory('EmpService', ['$http', 'UserService', function ($http, UserService) {
@@ -135,6 +154,24 @@ angular.module('TWS.services',[])
 
             return deferred.promise;
         };
+        var getAllRentsAdmin = function() {
+            var deferred = $q.defer();
+
+            $http({
+                method: 'GET',
+                url: toolURL + '/rent'
+            }).success(function(data, status, headers) {
+
+                console.log(data);
+
+                deferred.resolve(data);
+
+            }).error(function (data, statue, headers) {
+                deferred.reject(data)
+            });
+
+            return deferred.promise;
+        };
         var rent = function (user_id, tool_id,rent_num) {
             var deferred = $q.defer();
 
@@ -188,6 +225,7 @@ angular.module('TWS.services',[])
             getAllTools: getAllTools,
             getAllRents: getAllRents,
             rent: rent,
-            returnTool: returnTool
+            returnTool: returnTool,
+            getAllRentsAdmin: getAllRentsAdmin
         };
     })

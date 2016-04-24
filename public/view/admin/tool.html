@@ -18,112 +18,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th scope="row">阿姆斯特朗回旋加速炮</th>
-                    <td>123</td>
-                    <td>100</td>
+                <tr ng-repeat="tool in toolInfo">
+                    <th scope="row">{{tool.type}}</th>
+                    <td>{{tool._id}}</td>
+                    <td>{{tool.num}}</td>
                     <td>
-                        <div role="presentation" class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#"
-                                    role="button" aria-haspopup="true" aria-expanded="false">
-                                操作<span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">编辑</a></li>
-                                <li><a href="#">删除</a></li>
-                                <li><a href="#">全局置顶</a></li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">阿姆斯特朗回旋加速炮</th>
-                    <td>123</td>
-                    <td>100</td>
-                    <td>
-                        <div role="presentation" class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#"
-                                    role="button" aria-haspopup="true" aria-expanded="false">
-                                操作<span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">编辑</a></li>
-                                <li><a href="#">删除</a></li>
-                                <li><a href="#">全局置顶</a></li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">阿姆斯特朗回旋加速炮</th>
-                    <td>123</td>
-                    <td>100</td>
-                    <td>
-                        <div role="presentation" class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#"
-                                    role="button" aria-haspopup="true" aria-expanded="false">
-                                操作<span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">编辑</a></li>
-                                <li><a href="#">删除</a></li>
-                                <li><a href="#">全局置顶</a></li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">阿姆斯特朗回旋加速炮</th>
-                    <td>123</td>
-                    <td>100</td>
-                    <td>
-                        <div role="presentation" class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#"
-                                    role="button" aria-haspopup="true" aria-expanded="false">
-                                操作<span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">编辑</a></li>
-                                <li><a href="#">删除</a></li>
-                                <li><a href="#">全局置顶</a></li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">阿姆斯特朗回旋加速炮</th>
-                    <td>123</td>
-                    <td>100</td>
-                    <td>
-                        <div role="presentation" class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#"
-                                    role="button" aria-haspopup="true" aria-expanded="false">
-                                操作<span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">编辑</a></li>
-                                <li><a href="#">删除</a></li>
-                                <li><a href="#">全局置顶</a></li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">阿姆斯特朗回旋加速炮</th>
-                    <td>123</td>
-                    <td>100</td>
-                    <td>
-                        <div role="presentation" class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#"
-                                    role="button" aria-haspopup="true" aria-expanded="false">
-                                操作<span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">编辑</a></li>
-                                <li><a href="#">删除</a></li>
-                                <li><a href="#">全局置顶</a></li>
-                            </ul>
-                        </div>
+                        <label>数量:</label><input type="text" ng-model="tool.rent_num">
+                        <button ng-click="rent(tool)" class="return-button btn btn-default" href="#">
+                            借
+                        </button>
                     </td>
                 </tr>
                 <tr>

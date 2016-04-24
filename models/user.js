@@ -40,6 +40,6 @@ exports.login=function(nickname,password,callbak){
     });
 };
 
-exports.findUserById=function(author_id,callback){
-  User.findOne({_id:author_id},callback);
+exports.findAllUsers=function(callback){
+  User.find(callback)
 };

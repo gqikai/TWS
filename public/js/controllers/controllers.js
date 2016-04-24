@@ -6,7 +6,11 @@ angular.module('TWS.controllers',['TWS.services'])
 
         $('#login-button').click(function () {
             UserService.signin( $scope.username, $scope.password).then(function (data) {
-                $location.path('/emp-rent')
+                if(data.isAdmin == true){
+                    $location.path('/admin-tool')
+                }else{
+                    $location.path('/emp-rent')
+                }
             }, function (data) {
                 console.log(data)
                 $scope.err_message = data.message;
@@ -54,36 +58,29 @@ angular.module('TWS.controllers',['TWS.services'])
             })
         }
     })
-    .controller('AdminCtrl', function () {
+    .controller('AdminCtrl', function ($scope,$rootScope,ToolService,UserService) {
         $scope.rentInfo = null;
         $scope.toolInfo = null;
-        $scope.rent = function (tool) {
-            ToolService.rent($rootScope.user_id,tool._id,tool.rent_num).then(function (data) {
-                $scope.rentInfo.push({
-                    num: tool.rent_num,
-                    tool_id: tool._id
-                })
-            });
-        }
-        ToolService.getAllTools().then(function (data) {
-            $scope.toolInfo = data;
+        $scope.userInfo = null;
+        UserService.findAllUsers().then(function (data) {
+            $scope.userInfo = data;
+            console.log(data);
         }, function (data) {
             console.log(data);
         });
-        ToolService.getAllRents().then(function (data) {
+        ToolService.getAllTools().then(function (data) {
+            $scope.toolInfo = data;
+            console.log(data);
+        }, function (data) {
+            console.log(data);
+        });
+        ToolService.getAllRentsAdmin().then(function (data) {
             $scope.rentInfo = data;
         }, function (data) {
             console.log(data);
         }, function (data) {
             console.log(data)
         });
-        $scope.returnTool = function (info) {
-            ToolService.returnTool(info._id).then(function (data) {
-                $scope.rentInfo.removeByValue('_id',info._id);
-            }, function (data) {
-                console.log(data)
-            })
-        }
     })
     .controller('NavCtrl', function ($scope,$rootScope) {
     $scope.logout = function () {
