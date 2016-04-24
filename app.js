@@ -23,7 +23,7 @@ app.use(flash());
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -49,7 +49,7 @@ app.use(function (req, res, next) {
         res.writeHead(200, headers);
         res.end();
     } else {
-
+console.log(req.body);
         res.setHeader("Access-Control-Expose-Headers", "set-cookie");
         res.setHeader("Access-Control-Allow-Origin", "http://localhost:63343");
         next();

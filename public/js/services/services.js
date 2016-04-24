@@ -21,7 +21,7 @@ angular.module('TWS.services',[])
                     deferred.resolve(data);
 
                     $rootScope.username = username;
-                    $rootScope.password = password;
+                    $rootScope.user_id = data.user_id;
                     $rootScope.loged = true;
                 }else{
                     alert(data + "")
@@ -33,7 +33,9 @@ angular.module('TWS.services',[])
             return deferred.promise;
         };
         var signin = function(username,password) {
-            return $http({
+            var deferred = $q.defer();
+
+            $http({
                 method: 'POST',
                 url: signinURL,
                 data: {
@@ -43,17 +45,19 @@ angular.module('TWS.services',[])
             }).success(function(data, status, headers) {
                 console.log(data);
 
-                console.log(headers());
+
                 if(data.message == "ok"){
                     $rootScope.username = username;
-                    $rootScope.password = password;
+                    $rootScope.user_id = data.user_id;
                     $rootScope.loged = true;
+                    deferred.resolve(data);
                 }else{
-                    alert(data)
+                    deferred.reject(data)
                 }
             }).error(function (data, statue, headers) {
                 alert(data + statue + headers)
             });
+            return deferred.promise;
         };
 
         return {
@@ -110,7 +114,80 @@ angular.module('TWS.services',[])
             return deferred.promise;
         };
 
+        var getAllRents = function() {
+            var deferred = $q.defer();
+
+            $http({
+                method: 'POST',
+                url: toolURL + '/rent/find',
+                data: {
+                    user_id: $rootScope.user_id
+                }
+            }).success(function(data, status, headers) {
+
+                console.log(data);
+
+                deferred.resolve(data);
+
+            }).error(function (data, statue, headers) {
+                deferred.reject(data)
+            });
+
+            return deferred.promise;
+        };
+        var rent = function (user_id, tool_id,rent_num) {
+            var deferred = $q.defer();
+
+            $http({
+                method: 'POST',
+                url: toolURL + '/rent',
+                data: {
+                    user_id: user_id,
+                    tool_id: tool_id,
+                    rent_num: rent_num
+                }
+            }).success(function(data, status, headers) {
+
+                console.log(data);
+                if(data.message == "ok"){
+                    deferred.resolve(data);
+
+                }else{
+                    alert(data + "")
+                }
+            }).error(function (data, statue, headers) {
+                deferred.reject(data)
+            });
+            return deferred.promise;
+        }
+        var returnTool = function (rent_id) {
+            var deferred = $q.defer();
+
+            $http({
+                method: 'POST',
+                url: toolURL + '/rent/return',
+                data: {
+                    rent_id: rent_id
+                }
+            }).success(function(data, status, headers) {
+
+                console.log(data);
+                if(data.message == "ok"){
+                    deferred.resolve(data);
+
+
+                }else{
+                    alert(data + "")
+                }
+            }).error(function (data, statue, headers) {
+                deferred.reject(data)
+            });
+            return deferred.promise;
+        }
         return {
-            getAllTools: getAllTools
+            getAllTools: getAllTools,
+            getAllRents: getAllRents,
+            rent: rent,
+            returnTool: returnTool
         };
     })

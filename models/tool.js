@@ -10,10 +10,9 @@ var ToolSchema=new Schema({
 });
 
 var tool=mongoose.model("tool",ToolSchema);
-exports.Tool=tool;
-exports.newToolSave = function (tool_id,type,num,exprnsive, callback) {
+exports.Rent=tool;
+exports.newToolSave = function (type,num,exprnsive, callback) {
     var too = new tool();
-    too.tool_id = tool_id;
     too.type = type;
     too.num = num;
     too.expensive = exprnsive;
@@ -29,6 +28,15 @@ exports.findAllTools=function(callbck){
     });
 };
 
+    exports.update=function(tool_id,num,callback){
+        if(num){
+            tool.findByIdAndUpdate(tool_id, { $inc:{ num: -num }}, callback);
+        }
+        else{
+            console.log("else happend")
+        }
+    };
+
 exports.findToolById=function(tool_id,callbck){
     tool.find({tool_id:tool_id},function(err,tool){
         if(err){
@@ -38,14 +46,3 @@ exports.findToolById=function(tool_id,callbck){
         return callbck(err,tool);
     });
 };
-
-exports.findQueByQuestionId=function(que_id,callback){
-    question.findByIdAndUpdate(que_id, { $inc:{ views: 1 }}, callback);
-};
-
-exports.findQueById=function(que_id,callback){
-    question.findOne({_id:que_id},function(err,question){
-       callback(err,question);
-    });
-};
-

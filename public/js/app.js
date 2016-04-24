@@ -43,3 +43,13 @@ TWS.factory('myInterceptor', ['$log', function($log) {
 }]).config(['$httpProvider', function($httpProvider) {
     $httpProvider.interceptors.push('myInterceptor');
 }]);
+Array.prototype.removeByValue = function(index,val) {
+    for(var i=0; i<this.length; i++) {
+        if(this[i][index] == val) {
+            this.splice(i, 1);
+            break;
+        }
+    }
+}
+
+

@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var tool=require("../models/tool");
+var rent=require("../models/rent");
 var User=require("../models/user");
 var crypto = require('crypto');
 var configure = require('../config');
@@ -24,9 +25,8 @@ router.get('/home', function(req, res, next) {
     res.render('home');
 });
 router.get("/tool",function(req,res){
-tool.newToolSave('aaaa','aaaa',100,false, function (data) {
-    console.log(data);
-})
+
+
     if(req.session.user){
         tool.findAllTools(function(err, tools){
             if(err){
@@ -39,6 +39,59 @@ tool.newToolSave('aaaa','aaaa',100,false, function (data) {
     }
 
 });
+
+router.get("/tool/rent",function(req,res){
+
+
+    if(req.session.user){
+        rent.findAllRents(function(err, rents){
+            if(err){
+                return res.status(200).json(err);
+            }
+            else
+                return res.status(200).json(rents);
+        });
+
+    }
+
+});
+
+
+router.post("/tool/rent",function(req,res){
+    if(req.session.user){
+        tool.update(req.body.tool_id,req.body.rent_num, function (err,data) {
+            console.log("err:" + err + 'data:' + data)
+        })
+        rent.newRentSave(req.body.tool_id,req.body.user_id,req.body.rent_num, function (err,data) {
+            console.log("err:" + err + 'data:' + data)
+        })
+        return res.status(200).json({message:'ok'});
+    }
+
+});
+router.post("/tool/rent/find",function(req,res){
+    if(req.session.user){
+        rent.findRentsByUserId(req.body.user_id,function(err, rents){
+            if(err){
+                return res.status(200).json(err);
+            }
+            else
+                return res.status(200).json(rents);
+        });
+    }
+
+});
+
+router.post("/tool/rent/return",function(req,res){
+    if(req.session.user){
+        rent.remove(req.body.rent_id,function (err,data) {
+            console.log("err:" + err + 'data:' + data)
+        })
+        return res.status(200).json({message:'ok'});
+    }
+
+});
+
 
 router.post('/signup',function(req,res){
     var username=req.body.user;
@@ -59,7 +112,7 @@ router.post('/signup',function(req,res){
 
 
         req.session.user = user;
-        return res.status(200).json({message:'ok'});
+        return res.status(200).json({message:'ok',user_id: user._id});
     });
 
 });
@@ -72,6 +125,9 @@ router.post('/signin',function(req,res){
         password = md5.update(password + configure.password_salt).digest('hex');
 
     User.login(username,password,function(err,user){
+        if(!user){
+            return res.status(200).json({message:"cant find user"});
+        }
         if(err){
             return res.status(200).json({message:err.message});
         }
@@ -84,7 +140,7 @@ router.post('/signin',function(req,res){
                 signed: true
             });
             req.session.user = user;
-            return res.status(200).json({message:"ok"});
+            return res.status(200).json({message:"ok",user_id: user._id});
         }
     });
 
@@ -102,98 +158,4 @@ router.get('/logout', function(req, res, next) {
 });
 
 
-
-
-
-router.get("/tool/:que_id",function(req,res){
-    var user=req.session.user;
-    var que_id=req.params.que_id;
-    if(user){
-        tool.findQueByQuestionId(que_id,function(err, que){
-            if(err){
-                return err;
-            }
-            User.findUserById(que.author_id,function(err,author){
-               if(err){
-                   return err;
-               }
-                return res.render("tool",{
-                    que:que,
-                    author:author
-                });
-            });
-
-        });
-    }
-});
-
-
-router.post("/tool/:que_id/answer",function(req,res){
-    var ans_id=req.body.ans_id;
-    var upOrDown=req.body.upOrDown;
-    var user=req.session.user;
-    var question_id=req.params.que_id;
-    if(!ans_id){
-        var answer_content=req.body.ans_content;
-        if(user){
-            tool.findQueById(question_id,function(err, question){
-                if(err){
-                    return res.status(200).json(err);
-                }
-                Answer.newAnswerSave(question_id,user._id,user.NickName,answer_content,question.title,function(err,answer){
-                    if(err){
-                        return res.status(200).json(err);
-                    }
-
-                    return res.status(200).json(answer);
-                });
-            });
-        }
-    }
-    else{
-        if(user){
-            Answer.update(ans_id,upOrDown,function(err,answers){
-                if(err){
-                    return res.status(200).json(err);
-                }
-                Answer.findAnsbyQueId(question_id,function(err,answers){
-                    if(err){
-                        return res.status(200).json(err);
-                    }
-
-                    return res.status(200).json(answers);
-                });
-            })
-        }
-    }
-
-});
-
-router.get("/tool/:que_id/answer",function(req,res){
-    var user=req.session.user;
-    var question_id=req.params.que_id;
-    if(user){
-        Answer.findAnsbyQueId(question_id,function(err,answers){
-            if(err){
-                return res.status(200).json(err);
-            }
-
-            return res.status(200).json(answers);
-        });
-    }
-});
-
-
-router.get("/answers",function(req,res){
-   var user=req.session.user;
-    if(user){
-        Answer.findAnsbyUserId(user._id,function(err,answers){
-            if(err){
-                return res.status(200).json(err);
-            }
-
-            return res.status(200).json(answers);
-        });
-    }
-});
 module.exports = router;
