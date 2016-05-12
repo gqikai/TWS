@@ -6,27 +6,9 @@ var User=require("../models/user");
 var crypto = require('crypto');
 var configure = require('../config');
 /* GET home page. */
-router.get('/', function(req, res, next) {
-    if(req.session.user){
-        res.render('index');
-    }
-    else{
-        res.render("login");
-    }
-});
 
-router.get('/index', function(req, res, next) {
-    if(req.session.user){
-        res.render('index');
-    }
-});
-
-router.get('/home', function(req, res, next) {
-    res.render('home');
-});
+//获得所有工具
 router.get("/tool",function(req,res){
-
-
     if(req.session.user){
         tool.findAllTools(function(err, tools){
             if(err){
@@ -35,30 +17,22 @@ router.get("/tool",function(req,res){
             else
                 return res.status(200).json(tools);
         });
-
     }
-
 });
 
+//获得所有租借信息
 router.get("/tool/rent",function(req,res){
-
-
-    if(req.session.user.Nickname == 'admin'){
-        rent.findAllRents(function(err, rents){
+    rent.findAllRents(function(err, rents){
             if(err){
                 return res.status(200).json(err);
             }
             else
                 return res.status(200).json(rents);
         });
-
-    }
-
 });
+
+//获得所有用户
 router.get("/users",function(req,res){
-
-
-    if(req.session.user.Nickname == 'admin'){
         User.findAllUsers(function(err, rents){
             if(err){
                 return res.status(200).json(err);
@@ -66,12 +40,21 @@ router.get("/users",function(req,res){
             else
                 return res.status(200).json(rents);
         });
-
-    }
-
 });
 
+//用户注销
+router.get('/logout', function(req, res, next) {
+    if(req.session.user){
+        req.session.user=null;
+        res.clearCookie(configure.auth_cookie_name, {
+            maxAge: 1000 * 60 * 60 *24 * 30,
+            signed: true
+        });
+        res.redirect('/');
+    }
+});
 
+//处理租借请求
 router.post("/tool/rent",function(req,res){
     if(req.session.user){
         tool.update(req.body.tool_id,req.body.rent_num, function (err,data) {
@@ -84,6 +67,8 @@ router.post("/tool/rent",function(req,res){
     }
 
 });
+
+//获得指定租借信息
 router.post("/tool/rent/find",function(req,res){
     if(req.session.user){
         rent.findRentsByUserId(req.body.user_id,function(err, rents){
@@ -97,6 +82,7 @@ router.post("/tool/rent/find",function(req,res){
 
 });
 
+//归还指定工具
 router.post("/tool/rent/return",function(req,res){
     if(req.session.user){
         rent.remove(req.body.rent_id,function (err,data) {
@@ -107,7 +93,7 @@ router.post("/tool/rent/return",function(req,res){
 
 });
 
-
+//注册
 router.post('/signup',function(req,res){
     var username=req.body.user;
     var password=req.body.password;
@@ -128,14 +114,15 @@ router.post('/signup',function(req,res){
 
         req.session.user = user;
         if(user.NickName == 'admin'){
-            return res.status(200).json({message:'ok',user_id: user._id,isAdmin: true});
+            return res.status(200).json({message:'ok',user:user});
         }else{
-            return res.status(200).json({message:'ok',user_id: user._id});
+            return res.status(200).json({message:'ok',user:user});
         }
     });
 
 });
 
+//登录
 router.post('/signin',function(req,res){
     var username=req.body.user;
     var password=req.body.password;
@@ -161,25 +148,15 @@ router.post('/signin',function(req,res){
             req.session.user = user;
             console.log("login======="+user)
             if(user.NickName == 'admin'){
-                return res.status(200).json({message:'ok',user_id: user._id,isAdmin: true});
+                return res.status(200).json({message:'ok',user:user});
             }else{
-                return res.status(200).json({message:'ok',user_id: user._id});
+                return res.status(200).json({message:'ok',user:user});
             }
         }
     });
 
 });
 
-router.get('/logout', function(req, res, next) {
-    if(req.session.user){
-        req.session.user=null;
-        res.clearCookie(configure.auth_cookie_name, {
-            maxAge: 1000 * 60 * 60 *24 * 30,
-            signed: true
-        });
-        res.redirect('/');
-    }
-});
 
 
 module.exports = router;

@@ -16,13 +16,11 @@ angular.module('TWS.services',[])
                 }
             }).success(function(data, status, headers) {
 
-               console.log(data);
-                console.log(headers);
+               console.log("user data="+"");
+                console.log(data);
                 if(data.message == "ok"){
                     deferred.resolve(data);
-
-                    $rootScope.username = username;
-                    $rootScope.user_id = data.user_id;
+                    $rootScope.user = data.user;
                     $rootScope.loged = true;
                 }else{
                     alert(data + "")
@@ -48,8 +46,7 @@ angular.module('TWS.services',[])
 
 
                 if(data.message == "ok"){
-                    $rootScope.username = username;
-                    $rootScope.user_id = data.user_id;
+                    $rootScope.user = data.user;
                     $rootScope.loged = true;
                     deferred.resolve(data);
                 }else{
@@ -68,6 +65,7 @@ angular.module('TWS.services',[])
                 url: userUrl
             }).success(function(data, status, headers) {
 
+                console.log("users data="+"");
                 console.log(data);
 
                 deferred.resolve(data);
@@ -122,6 +120,7 @@ angular.module('TWS.services',[])
                 url: toolURL
             }).success(function(data, status, headers) {
 
+                console.log("tools data="+"");
                 console.log(data);
 
                     deferred.resolve(data);
@@ -133,17 +132,18 @@ angular.module('TWS.services',[])
             return deferred.promise;
         };
 
-        var getAllRents = function() {
+        var findRentsByUserId = function(user_id) {
             var deferred = $q.defer();
 
             $http({
                 method: 'POST',
                 url: toolURL + '/rent/find',
                 data: {
-                    user_id: $rootScope.user_id
+                    user_id: user_id
                 }
             }).success(function(data, status, headers) {
 
+                console.log("rents data="+"");
                 console.log(data);
 
                 deferred.resolve(data);
@@ -162,6 +162,7 @@ angular.module('TWS.services',[])
                 url: toolURL + '/rent'
             }).success(function(data, status, headers) {
 
+                console.log("rents data="+"");
                 console.log(data);
 
                 deferred.resolve(data);
@@ -185,6 +186,7 @@ angular.module('TWS.services',[])
                 }
             }).success(function(data, status, headers) {
 
+                console.log("rent data="+"");
                 console.log(data);
                 if(data.message == "ok"){
                     deferred.resolve(data);
@@ -208,6 +210,7 @@ angular.module('TWS.services',[])
                 }
             }).success(function(data, status, headers) {
 
+                console.log("return data="+"");
                 console.log(data);
                 if(data.message == "ok"){
                     deferred.resolve(data);
@@ -223,7 +226,7 @@ angular.module('TWS.services',[])
         }
         return {
             getAllTools: getAllTools,
-            getAllRents: getAllRents,
+            findRentsByUserId: findRentsByUserId,
             rent: rent,
             returnTool: returnTool,
             getAllRentsAdmin: getAllRentsAdmin

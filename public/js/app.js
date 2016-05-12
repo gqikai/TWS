@@ -25,6 +25,14 @@ TWS.config(['$routeProvider',
                 controller: 'LoginCtrl',
                 templateUrl: 'view/login.html'
             })
+            .when('/regist', {
+                controller: 'LoginCtrl',
+                templateUrl: 'view/regist.html'
+            })
+            .when('/progress', {
+                controller: 'ProgressCtrl',
+                templateUrl: 'view/emp/progress.html'
+            })
             .otherwise({redirectTo: '/login'});
     }])
 TWS.factory('myInterceptor', ['$log', function($log) {
@@ -51,5 +59,11 @@ Array.prototype.removeByValue = function(index,val) {
         }
     }
 }
-
+Array.prototype.findByValue = function(index,val) {
+    for(var i=0; i<this.length; i++) {
+        if(this[i][index] == val) {
+            return this[i];
+        }
+    }
+}
 

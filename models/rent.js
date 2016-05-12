@@ -33,7 +33,9 @@ exports.update=function(rent_id,num,callback){
         rent.findByIdAndUpdate(rent_id, { $inc:{ num: -num }}, callback);
     }
     else{
-        console.log("else happend")
+        err = {};
+        err.message = 'num不能为空！';
+        return callback(err, user);
     }
 };
 exports.remove=function(rent_id,callback){
@@ -41,7 +43,9 @@ exports.remove=function(rent_id,callback){
         rent.remove({_id: rent_id},callback);
     }
     else{
-        console.log("else rent_id happend")
+        err = {};
+        err.message = 'rent_id不能为空！';
+        return callback(err, user);
     }
 };
 

@@ -13,17 +13,17 @@
                 <tr>
                     <th>雇员ID</th>
                     <th>雇员姓名</th>
-                    <th>剩余量</th>
+                    <th>雇员类型</th>
                     <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th scope="row">阿姆斯特朗回旋加速炮</th>
-                    <td>123</td>
-                    <td>100</td>
+                <tr ng-repeat="user in userInfo">
+                    <th scope="row">{{user._id}}</th>
+                    <td>{{user.NickName}}</td>
+                    <td>{{user.isexpert?"专家":"普通"}}</td>
                     <td>
-                        <button class="btn btn-default" href="#" data-toggle="modal" data-target="#myModal">
+                        <button ng-click="showDetail(user)" class="btn btn-default" href="#" data-toggle="modal" data-target="#myModal">
                             查看借还信息
                         </button>
                     </td>
@@ -48,18 +48,14 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>工具名称</th>
                         <th>工具ID</th>
                         <th>数量</th>
-                        <th>租借日期</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <th scope="row">阿姆斯特朗回旋加速炮</th>
-                        <td>123</td>
-                        <td>100</td>
-                        <td>2001-9-5</td>
+                    <tr ng-repeat="detail in details">
+                        <th scope="row">{{detail.tool_id}}</th>
+                        <td>{{detail.num}}</td>
                     </tr>
                     </tbody>
                 </table>

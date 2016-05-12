@@ -1,16 +1,17 @@
 var mongoose = require('mongoose');
-
 var Schema=mongoose.Schema;
 var ObjectId  = Schema.ObjectId;
 var ToolSchema=new Schema({
     tool_id: {type: String},
     type: {type: String},
+    dept: {type: String},
     num: {type: Number},
     expensive: {type: Boolean}
 });
-
 var tool=mongoose.model("tool",ToolSchema);
-exports.Rent=tool;
+
+exports.Tool=tool;
+
 exports.newToolSave = function (type,num,exprnsive, callback) {
     var too = new tool();
     too.type = type;
@@ -18,6 +19,7 @@ exports.newToolSave = function (type,num,exprnsive, callback) {
     too.expensive = exprnsive;
     too.save(callback);
 };
+
 exports.findAllTools=function(callbck){
     tool.find(function(err,tools){
         if(err){
@@ -28,12 +30,14 @@ exports.findAllTools=function(callbck){
     });
 };
 
-    exports.update=function(tool_id,num,callback){
+exports.update=function(tool_id,num,callback){
         if(num){
             tool.findByIdAndUpdate(tool_id, { $inc:{ num: -num }}, callback);
         }
         else{
-            console.log("else happend")
+            err = {};
+            err.message = 'num不能为空！';
+            return callback(err, user);
         }
     };
 

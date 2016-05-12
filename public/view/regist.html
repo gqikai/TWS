@@ -2,21 +2,29 @@
     <h4>{{err_message}}</h4>
 </div>
 
+
 <div class="container">
     <br>
-    <div id="login" class="panel panel-primary">
+    <div id="regist" class="panel panel-primary">
         <div class="panel-heading">
-            Login
+            Regist
         </div>
         <div class="panel-body">
             <div class="form-group">
                 <label>用户名:</label><input type="text" ng-model="username" class="form-control">
+                <label>是否专家:</label>是:<input type="radio">否:<input type="radio"><br/>
+                <label>部门:</label>
+                <select id="yonghuzu" class="form-control">
+                    <option>A</option>
+                    <option>B</option>
+                </select>
                 <label>密码:</label><input type="password" ng-model="password" class="form-control">
             </div>
             <a href="#" class="text-info">忘记密码?</a>
-            <input id="login-button" type="button" value="登录" class="btn btn-primary pull-right">
-            <a href="#/regist"><button class="btn btn-primary pull-right" >注册</button></a>
+            <input id="regist-button" type="button" value="注册" class="btn btn-primary pull-right">
+            <a href="#/login"><button class="btn btn-primary pull-right" >登录</button></a>
 
         </div>
+
     </div>
 </div>

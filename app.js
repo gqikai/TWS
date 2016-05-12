@@ -4,9 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
 var routes = require('./routes/index');
-var users = require('./routes/users');
 var mongoose = require('./models/db');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
@@ -35,6 +33,8 @@ app.use(session({
         ttl: 3 * 24 * 60 * 60 // 3 days
     })
 }));
+
+//解决 跨域时浏览器在发送GET/POST请求时先发送一个OPTIONS请求的问题
 app.use(function (req, res, next) {
     if (req.method === 'OPTIONS') {
         console.log('!OPTIONS');
@@ -49,7 +49,8 @@ app.use(function (req, res, next) {
         res.writeHead(200, headers);
         res.end();
     } else {
-console.log(req.body);
+        console.log("data="+"");
+        console.log(req.body);
         res.setHeader("Access-Control-Expose-Headers", "set-cookie");
         res.setHeader("Access-Control-Allow-Origin", "http://localhost:63343");
         next();
@@ -59,7 +60,6 @@ console.log(req.body);
 
 
 app.use('/', routes);
-app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

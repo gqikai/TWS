@@ -12,17 +12,18 @@
                 <th>工具名称</th>
                 <th>工具ID</th>
                 <th>数量</th>
-                <th>租借日期</th>
+                <th>工具类型</th>
                 <th>操作</th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="info in rentInfo">
-                <th>{{}}</th>
+                <th>{{toolInfo.findByValue('_id',info.tool_id).type}}</th>
                 <td>{{info.tool_id}}</td>
                 <td>{{info.num}}</td>
-                <td>{{info.time}}</td>
-                <td><button ng-click="returnTool(info)" class="btn btn-default" href="#">注销/返还</button></td>
+                <td>{{toolInfo.findByValue('_id',info.tool_id).expensive?'贵重工具':'普通工具'}}</td>
+                <td><button ng-click="returnTool(info)" class="btn btn-default" href="#">返还</button>
+                    <button ng-click="returnTool(info)" ng-hide="toolInfo.findByValue('_id',info.tool_id).expensive" class="btn btn-default" href="#">注销</button></td>
             </tr>
             </tbody>
         </table>

@@ -1,14 +1,14 @@
 var mongoose = require('mongoose');
-
 var Schema=mongoose.Schema;
 var ObjectId  = Schema.ObjectId;
 var UserSchema=new Schema({
     NickName: { type: String },
-    password:{ type: String }
+    password:{ type: String },
+    dept:{ type: String },
+    isexpert:{ type: Boolean },
+    isAdmin:{ type: Boolean }
 });
-
 var User=mongoose.model("users",UserSchema);
-
 
 exports.newUser=function(nickname,password,callback){
     User.find({ NickName: nickname }, function (err, user) {
@@ -22,10 +22,11 @@ exports.newUser=function(nickname,password,callback){
 
         user.NickName=nickname;
         user.password=password;
+        user.dept = "A";
+        user.isexpert
         user.save(callback);
     });
 };
-
 
 exports.login=function(nickname,password,callbak){
     User.findOne({NickName:nickname},function(err,user){

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../public/lib/js/angular.js"></script>
+    <link rel="stylesheet" href="../public/lib/css/bootstrap.min.css"/>
+    <script src="../public/lib/js/bootstrap.min.js"></script>
+    <script>
+        var myApp = angular.module('myApp', []);
+
+        myApp.controller('main', ['$scope', '$interval', function($scope, $interval){
+            var vm = $scope.vm = {};
+            vm.value = 0;
+            vm.style = 'progress-bar-danger';
+            vm.showLabel = true;
+            vm.striped = true;
+
+            $scope.selectValue = function (){
+                console.log(vm.style);
+            };
+            var index = 0;
+            var timeId = 500;
+            $scope.count = function(){
+                var start = $interval(function(){
+                    vm.value =  ++index;
+                    if (index > 99) {
+                        $interval.cancel(start);
+                    }
+                    if (index == 60) {
+                        index = 99;
+                    }
+                }, timeId);
+            };
+
+        }]);
+    </script>
+</head>
+<body ng-controller="main">
+<div ng-class="{progress: true, 'progress-striped': vm.striped}" class="col-md-4">
+    <div ng-class="['progress-bar', vm.style]" ng-style="{width: vm.value + '%'}">
+        <div ng-if="vm.showLabel">{{vm.value}}%</div>
+    </div>
+</div>
+<button class="btn btn-success" ng-click="count()">开始进度</button>
+</body>
+</html>
