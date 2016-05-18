@@ -35,22 +35,8 @@ TWS.config(['$routeProvider',
             })
             .otherwise({redirectTo: '/login'});
     }])
-TWS.factory('myInterceptor', ['$log', function($log) {
-    $log.debug('$log is here to show you that this is a regular factory with injection');
-
-    var myInterceptor = {
-        'response': function (resp) {
-            //$log.debug(resp);
-            //$log.debug(resp.headers('set-cookie'));
-            //$log.debug(resp.headers('X-Powered-By'));
-            return resp;
-        }
-    };
-
-    return myInterceptor;
-}]).config(['$httpProvider', function($httpProvider) {
-    $httpProvider.interceptors.push('myInterceptor');
-}]);
+ 
+//添加工具方法
 Array.prototype.removeByValue = function(index,val) {
     for(var i=0; i<this.length; i++) {
         if(this[i][index] == val) {

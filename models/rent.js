@@ -1,16 +1,16 @@
 var mongoose = require('mongoose');
-
-var Schema=mongoose.Schema;
-var ObjectId  = Schema.ObjectId;
-var RentSchema=new Schema({
+var Schema = mongoose.Schema;
+var ObjectId = Schema.ObjectId;
+var RentSchema = new Schema({
     tool_id: {type: String},
     user_id: {type: String},
     num: {type: Number}
 });
+var rent = mongoose.model("rent", RentSchema);
 
-var rent=mongoose.model("rent",RentSchema);
-exports.Rent=rent;
-exports.newRentSave = function (tool_id,user_id,num, callback) {
+exports.Rent = rent;
+
+exports.newRentSave = function (tool_id, user_id, num, callback) {
     var re = new rent();
     re.tool_id = tool_id;
     re.user_id = user_id;
@@ -18,43 +18,34 @@ exports.newRentSave = function (tool_id,user_id,num, callback) {
     re.save(callback);
 };
 
-exports.findAllRents=function(callbck){
-    rent.find(function(err,rents){
-        if(err){
-            return callbck(err);
-        }
-
-        return callbck(err,rents);
-    });
+exports.findRentById = function (_id, callback) {
+    rent.find({'_id': _id},callback);
 };
 
-exports.update=function(rent_id,num,callback){
-    if(num){
-        rent.findByIdAndUpdate(rent_id, { $inc:{ num: -num }}, callback);
-    }
-    else{
-        err = {};
-        err.message = 'num不能为空！';
+exports.findRentsByUserId = function (user_id, callback) {
+    rent.find({'user_id': user_id}, callback);
+};
+
+exports.findAllRents = function (callback) {
+    rent.find({}, callback);
+};
+
+exports.update = function (_id, num, callback) {
+    if (num) {
+        rent.findByIdAndUpdate(_id, {$inc: {num: -num}}, callback);
+    } else {
+        err = {message: 'num不能为空！'};
         return callback(err, user);
     }
 };
-exports.remove=function(rent_id,callback){
-    if(rent_id){
-        rent.remove({_id: rent_id},callback);
+exports.remove = function (rent_id, callback) {
+    if (rent_id) {
+        rent.remove({_id: rent_id}, callback);
     }
-    else{
+    else {
         err = {};
         err.message = 'rent_id不能为空！';
         return callback(err, user);
     }
 };
 
-exports.findRentsByUserId=function(user_id,callbck){
-    rent.find({user_id:user_id},function(err,rent){
-        if(err){
-            return callbck(err);
-        }
-
-        return callbck(err,rent);
-    });
-};
