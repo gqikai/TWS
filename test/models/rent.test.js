@@ -21,7 +21,7 @@ describe('rent模块测试', function () {
     });
 
     it('测试findRentById', function (done) {
-        rent.findRentById(_id, function (err, data) {
+        rent.findRentById(_id.id, function (err, data) {
             expect(err).to.be.equal(null);
             expect(data.tool_id).to.be.equal(random_tool_id);
             expect(data.user_id).to.be.equal(random_user_id);
@@ -30,27 +30,27 @@ describe('rent模块测试', function () {
         done();
     });
 
-    //
-    //it('测试findRentsByUserId', function (done) {
-    //    rent.findRentsByUserId(random_user_id, function (err, data) {
-    //        console.log(err + data);
-    //        //expect(err).to.be.equal(null);
-    //        //expect(data instanceof Array).to.be.ok;
-    //        //expect(data[0] instanceof Object).to.be.ok;
-    //        done();
-    //    });
-    //});
 
-    //
-    //it('测试findAllRents', function (done) {
-    //    rent.findAllRents(function (err, data) {
-    //        expect(err).to.be.equal(null);
-    //        expect(data instanceof Array).to.be.ok;
-    //        expect(data[0] instanceof Object).to.be.ok;
-    //        done();
-    //    });
-    //});
-    //
+    it('测试findRentsByUserId', function (done) {
+        rent.findRentsByUserId(random_user_id, function (err, data) {
+            console.log(err + data);
+            expect(err).to.be.equal(null);
+            expect(data instanceof Array).to.be.ok;
+            expect(data[0] instanceof Object).to.be.ok;
+            done();
+        });
+    });
+
+
+    it('测试findAllRents', function (done) {
+        rent.findAllRents(function (err, data) {
+            expect(err).to.be.equal(null);
+            expect(data instanceof Array).to.be.ok;
+            expect(data[0] instanceof Object).to.be.ok;
+            done();
+        });
+    });
+
 
     it('测试update', function (done) {
         rent.update(_id, 10, function (err, data) {

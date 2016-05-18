@@ -19,8 +19,8 @@ exports.newToolSave = function (type, dept, num, exprnsive, callback) {
     too.expensive = exprnsive;
     too.save(callback);
 };
-exports.findToolById = function (tool_id, callbck) {
-    tool.find({tool_id: tool_id}, callbck);
+exports.findToolById = function (_id, callbck) {
+    tool.findById(_id, callbck);
 };
 
 exports.findAllTools = function (callback) {
@@ -32,9 +32,8 @@ exports.update = function (tool_id, num, callback) {
         tool.findByIdAndUpdate(tool_id, {$inc: {num: -num}}, callback);
     }
     else {
-        err = {};
-        err.message = 'num不能为空！';
-        return callback(err, user);
+        err = {message :'num不能为空！'};
+        return callback(err);
     }
 };
 
